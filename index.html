@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Graydot Tech - Drag and Drop</title>
+        <link rel="stylesheet" href="./index.css">
+    </head>
+    <body>
+        <header>
+            Greatest Footballers of All Time
+        </header>
+        <div id="container1">
+            <div id="left">
+                <div class="list" draggable="true"><img src="drag-icon.png" alt="">Cristiano Ronaldo</div>
+                <div class="list" draggable="true"><img src="drag-icon.png" alt="">Lionel Messi</div>
+                <div class="list" draggable="true"><img src="drag-icon.png" alt="">Pele</div>
+                <div class="list" draggable="true"><img src="drag-icon.png" alt="">Maradona</div>
+            </div>
+            <div id="right"></div> 
+        </div>
+        <div id="container2">
+            <div id="success">
+                The item was successfully moved!
+            </div>
+        </div>
+        <div id="container3">
+            <br>
+            <button class="reset" onclick="reset()">Reset</button>
+        </div>
+        <script>
+            function wait(ms) {
+                var start = new Date().getTime();
+                var end = start;
+                while (end < start + ms) {
+                    end = new Date().getTime();
+                }
+            }
+            let lists = document.getElementsByClassName("list");
+            let rightBox = document.getElementById("right");
+            let leftBox = document.getElementById("left");
+            for (list of lists) {
+                list.addEventListener("dragstart", (e) => {
+                    // This check for what element is currently being dragged
+                    let selected = e.target;
+                    // This enables the element with ID "rightBox" to viable for having something dragged into it.
+                    rightBox.addEventListener("dragover", (e) => {
+                        e.preventDefault();
+                    })
+                    // This makes it possible for the draggable element to be dropped into the container.
+                    rightBox.addEventListener("drop", (e) => {
+                        rightBox.appendChild(selected);
+                        // The tells the user that something has been successfully dragged and dropped.
+                        document.getElementById("success").style.visibility = 'visible';
+                        selected = null;
+                    })
+                    // Uncomment the 7 lines below to be able to drag back from right box to left box. 
+                    // leftBox.addEventListener("dragover", (e) => {
+                    //     e.preventDefault();
+                    // })
+                    // leftBox.addEventListener("drop", (e) => {
+                    //     leftBox.appendChild(selected);
+                    //     selected = null;
+                    // })
+                })
+            }
+
+            function reset() {
+                var rightBox = document.getElementById("right");
+                var leftBox = document.getElementById("left");
+                const array = rightBox.getElementsByClassName("list");
+                // When the reset button is clicked, all the elements in the rightBox are moved to the left.
+                while (array.length > 0) {
+                    console.log(array);
+                    let val = [...array].shift()
+                    leftBox.appendChild(val);
+                    console.log("Child appended.")
+                }
+            }
+        </script>
+    </body>
+</html>
